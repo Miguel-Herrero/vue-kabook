@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
+    <h1>{{ currentUser.displayName }}</h1>
     <h2>Essential Links</h2>
     <ul>
       <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
@@ -21,12 +21,20 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'HelloWorld',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
     }
+  },
+
+  computed: {
+    ...mapState({
+      currentUser: state => state.users.currentUser
+    })
   }
 }
 </script>
