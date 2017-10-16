@@ -1,9 +1,5 @@
 const state = {
-  currentUser: {
-    displayName: '',
-    email: '',
-    photoURL: ''
-  }
+  currentUser: null
 }
 
 const mutations = {

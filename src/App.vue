@@ -1,26 +1,37 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png" width="250px">
-    <router-view/>
-  </div>
+  <section id="app" class="hero is-light is-bold is-fullheight">
+    <!-- Hero head: will stick at the top -->
+    <Header />
+
+    <!-- Hero content: will be in the middle -->
+    <div class="hero-body">
+      <div class="container">
+        <img src="./assets/logo.png" width="250px">
+        <router-view/>
+      </div>
+    </div>
+
+    <!-- Hero footer: will stick at the bottom -->
+    <Footer />
+  </section>
 </template>
 
 <script>
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+
 export default {
   name: 'app',
+
+  components: {
+    Header,
+    Footer
+  },
+
   created () {
     this.$store.dispatch('users/fetchCurrentUser')
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style lang="sass" src="bulma"></style>
