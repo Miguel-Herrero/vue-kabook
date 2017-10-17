@@ -1,5 +1,6 @@
 <template>
   <div class="hello">
+    <img src="../assets/logo.png" width="250px">
     <h1>{{ currentUser.displayName }}</h1>
     <h2>Essential Links</h2>
     <ul>

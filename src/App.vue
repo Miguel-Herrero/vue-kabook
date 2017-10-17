@@ -6,7 +6,6 @@
     <!-- Hero content: will be in the middle -->
     <div class="hero-body">
       <div class="container">
-        <img src="./assets/logo.png" width="250px">
         <router-view/>
       </div>
     </div>
