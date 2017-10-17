@@ -22,20 +22,10 @@
                 Documentation
               </a>
               <span class="navbar-item" v-if="currentUser">
-                <a class="button is-primary is-inverted">
-                  <span class="icon">
-                    <i class="fa fa-github"></i>
-                  </span>
-                  <span>Log out</span>
-                </a>
+                <button @click="signOut" class="button is-primary">Log out</button>
               </span>
               <span class="navbar-item" v-else>
-                <a class="button is-primary is-inverted">
-                  <span class="icon">
-                    <i class="fa fa-github"></i>
-                  </span>
-                  <span>Log in</span>
-                </a>
+                <button @click="signInWithGoogle" class="button is-primary">Log in</button>
               </span>
             </div>
           </div>
@@ -49,6 +39,16 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'Header',
+
+  methods: {
+    signInWithGoogle () {
+      this.$store.dispatch('users/signIn')
+    },
+
+    signOut () {
+      this.$store.dispatch('users/signOut')
+    }
+  },
 
   computed: {
     ...mapState({

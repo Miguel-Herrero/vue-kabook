@@ -1,7 +1,7 @@
 <template>
   <section id="app" class="hero is-light is-bold is-fullheight">
     <!-- Hero head: will stick at the top -->
-    <Header />
+    <my-header />
 
     <!-- Hero content: will be in the middle -->
     <div class="hero-body">
@@ -12,7 +12,7 @@
     </div>
 
     <!-- Hero footer: will stick at the bottom -->
-    <Footer />
+    <my-footer />
   </section>
 </template>
 
@@ -24,8 +24,8 @@ export default {
   name: 'app',
 
   components: {
-    Header,
-    Footer
+    myHeader: Header,
+    myFooter: Footer
   },
 
   created () {
