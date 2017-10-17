@@ -5,10 +5,10 @@ import 'babel-polyfill'
 
 import Firebase from 'firebase'
 import 'firebase/firestore'
-import config from '../config'
+import config from '@/config'
 
-import users from './users'
-import books from './books'
+import users from '@/store/users'
+import books from '@/store/books'
 
 Firebase.initializeApp(config)
 

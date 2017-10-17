@@ -1,4 +1,4 @@
-import config from '../config'
+import config from '@/config'
 
 const state = {
   currentUser: null
@@ -20,8 +20,8 @@ const mutations = {
 }
 
 const actions = {
-  fetchCurrentUser ({ commit, rootState }) {
-    rootState.fb.auth().onAuthStateChanged((user) => {
+  async fetchCurrentUser ({ commit, rootState }) {
+    await rootState.fb.auth().onAuthStateChanged((user) => {
       if (user && config.authorizedEmails.includes(user.email)) {
         return commit('SET_CURRENT_USER', { user })
       } else if (user) {
@@ -31,13 +31,13 @@ const actions = {
     })
   },
 
-  signIn ({ commit, rootState }) {
+  async signIn ({ commit, rootState }) {
     const provider = new rootState.fb.auth.GoogleAuthProvider()
-    rootState.fb.auth().signInWithRedirect(provider)
+    await rootState.fb.auth().signInWithRedirect(provider)
   },
 
-  signOut ({ commit, rootState }) {
-    rootState.fb.auth().signOut().then(() => {
+  async signOut ({ commit, rootState }) {
+    await rootState.fb.auth().signOut().then(() => {
       commit('UNSET_CURRENT_USER')
     }).catch(err => console.error(err))
   }
