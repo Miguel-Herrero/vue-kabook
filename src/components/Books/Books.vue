@@ -42,7 +42,9 @@ export default {
       this.$store.dispatch('books/getLastBooks')
     }
 
-    this.$store.dispatch('books/getAllBooks')
+    if (!this.booksIds.length) {
+      this.$store.dispatch('books/getAllBooks')
+    }
   }
 }
 </script>

@@ -18,7 +18,8 @@ const mutations = {
         language: data.language,
         summary: data.summary,
         udpated: data.updated,
-        links: data.links
+        links: data.links,
+        tags: data.tags
       }
     }
     if (state.allIds.indexOf(book.id) < 0) {

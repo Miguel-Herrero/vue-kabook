@@ -18,6 +18,7 @@ const mutations = {
 
 const actions = {
   async fetchAuthor ({ commit, rootState }, { id }) {
+    console.log('fetchAuthor', id)
     let authorsRef = rootState.db.collection('authors')
     let author = await authorsRef.doc(id).get()
 

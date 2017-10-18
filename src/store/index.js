@@ -10,6 +10,7 @@ import config from '@/config'
 import authors from '@/store/authors'
 import users from '@/store/users'
 import books from '@/store/books'
+import tags from '@/store/tags'
 
 Firebase.initializeApp(config)
 
@@ -25,6 +26,7 @@ export default new Vuex.Store({
   modules: {
     authors,
     users,
-    books
+    books,
+    tags
   }
 })

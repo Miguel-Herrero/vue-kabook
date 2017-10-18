@@ -15,9 +15,19 @@
       </h3>
 
       <ul>
-         <li><strong>Publication date</strong>: {{ books[id].publicationDate | moment("DD/MM/YYYY") }}</li>
+        <li><strong>Publication date</strong>: {{ books[id].publicationDate | moment("DD/MM/YYYY") }}</li>
         <li><strong>Source</strong>: {{ books[id].source }}</li>
         <li><strong>Language</strong>: {{ books[id].language }}</li>
+        <li><strong>Tags</strong>:
+          <div class="tags">
+            <router-link
+              v-for="tag in tags"
+              :to="{ name: 'tagDetail', params: { id: tag.id } }"
+              :key="tag.id"
+              class="tag">{{ tag.name }}
+            </router-link>
+          </div>
+        </li>
         <li><strong>Summary</strong>: <p>{{ books[id].summary }}</p></li>
         <li><strong>Updated</strong>: {{ books[id].updated | moment("DD/MM/YYYY HH:mm") }}</li>
         <li><strong>Download</strong>:
@@ -42,7 +52,8 @@ export default {
   computed: {
     ...mapState({
       books: state => state.books.all,
-      authorsAll: state => state.authors.all
+      authorsAll: state => state.authors.all,
+      tagsAll: state => state.tags.all
     }),
 
     authors () {
@@ -57,13 +68,36 @@ export default {
         }
       })
       return authors
+    },
+
+    tags () {
+      const tagsIds = Object.keys(this.books[this.id].tags)
+      let tags = {}
+      tagsIds.forEach(tagId => {
+        if (this.tagsAll[tagId]) {
+          tags = {
+            ...tags,
+            [tagId]: this.tagsAll[tagId]
+          }
+        }
+      })
+      return tags
     }
   },
 
   created () {
     const bookAuthorsIds = Object.keys(this.books[this.id].authors)
     bookAuthorsIds.forEach(authorId => {
-      this.$store.dispatch('authors/fetchAuthor', { id: authorId })
+      if (!this.authorsAll[authorId]) {
+        this.$store.dispatch('authors/fetchAuthor', { id: authorId })
+      }
+    })
+
+    const tagsIds = Object.keys(this.books[this.id].tags)
+    tagsIds.forEach(tagId => {
+      if (!this.tagsAll[tagId]) {
+        this.$store.dispatch('tags/fetchTag', { id: tagId })
+      }
     })
   }
 }
