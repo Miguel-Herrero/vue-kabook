@@ -15,12 +15,6 @@
           <div id="navbarMenuHeroA" class="navbar-menu">
             <div class="navbar-end">
               <router-link class="navbar-item" :to="{ name: 'books' }">Books</router-link>
-              <a class="navbar-item">
-                Examples
-              </a>
-              <a class="navbar-item">
-                Documentation
-              </a>
               <span class="navbar-item" v-if="currentUser">
                 <button @click="signOut" class="button is-primary">Log out</button>
               </span>
