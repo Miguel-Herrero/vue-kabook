@@ -9,7 +9,7 @@
       </thead>
       <tbody>
         <tr v-for="id in booksIds" :key="id">
-          <td>{{ id }}</td>
+          <td><router-link :to="{ name: 'book', params: { id }}">{{ id }}</router-link></td>
           <td>{{ books[id].title }}</td>
           <td>{{ books[id].authors }}</td>
         </tr>

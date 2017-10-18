@@ -12,7 +12,13 @@ const mutations = {
       [book.id]: {
         title: data.title,
         authors: data.author,
-        cover: data.cover
+        cover: data.cover,
+        source: data.source,
+        publicationDate: data.publicationDate,
+        language: data.language,
+        summary: data.summary,
+        udpated: data.updated,
+        links: data.links
       }
     }
     if (state.allIds.indexOf(book.id) < 0) {

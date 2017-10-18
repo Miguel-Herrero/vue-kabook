@@ -7,6 +7,7 @@ import Firebase from 'firebase'
 import 'firebase/firestore'
 import config from '@/config'
 
+import authors from '@/store/authors'
 import users from '@/store/users'
 import books from '@/store/books'
 
@@ -22,6 +23,7 @@ const state = {
 export default new Vuex.Store({
   state,
   modules: {
+    authors,
     users,
     books
   }
