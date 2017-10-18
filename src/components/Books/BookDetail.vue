@@ -9,8 +9,8 @@
     <div class="column">
       <h1 class="title is-1">{{ books[id].title }}</h1>
       <h3 class="subtitle is-3">
-        <span v-for="author in authors" :key="author.id">
-          <router-link :to="{ name: 'authorDetail', params: { id: author.id } }">{{ author.fullName }}, </router-link>
+        <span v-for="authorId in books[id].authors" :key="authorId">
+          <router-link v-if="authorsAll[authorId].fullName" :to="{ name: 'authorDetail', params: { id: authorId } }">{{ authorsAll[authorId].fullName }}, </router-link>
         </span>
       </h3>
 
@@ -56,20 +56,6 @@ export default {
       tagsAll: state => state.tags.all
     }),
 
-    authors () {
-      const bookAuthorsIds = Object.keys(this.books[this.id].authors)
-      let authors = {}
-      bookAuthorsIds.forEach(authorId => {
-        if (this.authorsAll[authorId]) {
-          authors = {
-            ...authors,
-            [authorId]: this.authorsAll[authorId]
-          }
-        }
-      })
-      return authors
-    },
-
     tags () {
       const tagsIds = Object.keys(this.books[this.id].tags)
       let tags = {}
@@ -86,8 +72,7 @@ export default {
   },
 
   created () {
-    const bookAuthorsIds = Object.keys(this.books[this.id].authors)
-    bookAuthorsIds.forEach(authorId => {
+    this.books[this.id].authors.forEach(authorId => {
       if (!this.authorsAll[authorId]) {
         this.$store.dispatch('authors/fetchAuthor', { id: authorId })
       }

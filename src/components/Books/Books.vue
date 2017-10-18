@@ -8,10 +8,13 @@
         <th>Author</th>
       </thead>
       <tbody>
-        <tr v-for="id in booksIds" :key="id">
-          <td><router-link :to="{ name: 'book', params: { id }}">{{ id }}</router-link></td>
-          <td>{{ books[id].title }}</td>
-          <td>{{ books[id].authors }}</td>
+        <tr v-for="book in books" :key="book.title">
+          <td><router-link :to="{ name: 'book', params: { id: book.id }}">{{ book.id }}</router-link></td>
+          <td>{{ book.title }}</td>
+          <td>
+            <span v-if="authors[authorId]" v-for="authorId in book.authors" :key="authorId">{{ authors[authorId].fullName }}</span>
+            <span v-else>Loading author...</span>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -28,12 +31,32 @@ import { mapState } from 'vuex'
 export default {
   name: 'Books',
 
+  data () {
+    return {
+      myBooks: {}
+    }
+  },
+
   computed: {
     ...mapState({
       books: state => state.books.all,
       booksIds: state => state.books.allIds,
-      lastIds: state => state.books.lastIds
+      lastIds: state => state.books.lastIds,
+      authors: state => state.authors.all,
+      authorsIds: state => state.authors.allIds
     })
+  },
+
+  watch: {
+    booksIds: function (val) {
+      val.forEach(id => {
+        this.books[id].authors.forEach(authorId => {
+          if (this.authorsIds.indexOf(authorId) < 0) {
+            this.$store.dispatch('authors/fetchAuthor', { id: authorId })
+          }
+        })
+      })
+    }
   },
 
   created () {
