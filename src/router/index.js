@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Books from '@/components/Books/Books'
 import BookDetail from '@/components/Books/BookDetail'
+import Tags from '@/components/Tags/Tags'
 import store from '@/store'
 
 Vue.use(Router)
@@ -24,6 +25,11 @@ const router = new Router({
       name: 'book',
       component: BookDetail,
       props: true
+    },
+    {
+      path: '/tags',
+      name: 'tags',
+      component: Tags
     }
   ]
 })

@@ -24,6 +24,15 @@ const actions = {
     if (tag) {
       commit('SET_TAG', { tag })
     }
+  },
+
+  async getAllTags ({ commit, rootState }) {
+    let tagsRef = rootState.db.collection('tags')
+    let tags = await tagsRef.orderBy('name', 'asc').get()
+
+    tags.forEach(tag => {
+      commit('SET_TAG', { tag })
+    })
   }
 }
 
