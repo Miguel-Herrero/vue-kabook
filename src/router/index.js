@@ -6,6 +6,7 @@ import Author from '@/components/Authors/AuthorDetail'
 import Books from '@/components/Books/Books'
 import BookDetail from '@/components/Books/BookDetail'
 import Tags from '@/components/Tags/Tags'
+import TagDetail from '@/components/Tags/TagDetail'
 import store from '@/store'
 
 Vue.use(Router)
@@ -32,6 +33,12 @@ const router = new Router({
       path: '/tags',
       name: 'tags',
       component: Tags
+    },
+    {
+      path: '/tags/:id',
+      name: 'tag',
+      component: TagDetail,
+      props: true
     },
     {
       path: '/authors',

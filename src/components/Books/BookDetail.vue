@@ -10,7 +10,7 @@
       <h1 class="title is-1">{{ books[id].title }}</h1>
       <h3 class="subtitle is-3">
         <span v-for="authorId in books[id].authors" :key="authorId">
-          <router-link v-if="authorsAll[authorId].fullName" :to="{ name: 'authorDetail', params: { id: authorId } }">{{ authorsAll[authorId].fullName }}, </router-link>
+          <router-link v-if="authorsAll[authorId].fullName" :to="{ name: 'author', params: { id: authorId } }">{{ authorsAll[authorId].fullName }}, </router-link>
         </span>
       </h3>
 
@@ -22,7 +22,7 @@
           <div class="tags">
             <router-link
               v-for="tag in tags"
-              :to="{ name: 'tagDetail', params: { id: tag.id } }"
+              :to="{ name: 'tag', params: { id: tag.id } }"
               :key="tag.id"
               class="tag">{{ tag.name }}
             </router-link>
