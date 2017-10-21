@@ -18,7 +18,7 @@ const mutations = {
         publicationDate: data.publicationDate,
         language: data.language,
         summary: data.summary,
-        udpated: data.updated,
+        updated: data.updated,
         links: data.links,
         tags: data.tags
       }
@@ -37,7 +37,7 @@ const mutations = {
 const actions = {
   async getLastBooks ({ commit, rootState }) {
     let booksRef = rootState.db.collection('books')
-    let books = await booksRef.limit(4).get()
+    let books = await booksRef.orderBy('updated', 'desc').limit(5).get()
 
     books.forEach(book => {
       commit('SET_BOOK', { book })

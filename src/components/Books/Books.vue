@@ -1,5 +1,26 @@
 <template>
   <section>
+    <h1 class="title">Last books</h1>
+    <table class="table">
+      <thead>
+        <th>ISBN</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Added on</th>
+      </thead>
+      <tbody>
+        <tr v-for="id in lastIds" :key="id">
+          <th><router-link :to="{ name: 'book', params: { id: id }}">{{ id }}</router-link></th>
+          <td>{{ books[id].title }}</td>
+          <td>
+            <span v-if="authors[authorId]" v-for="authorId in books[id].authors" :key="authorId">{{ authors[authorId].fullName }}</span>
+            <span v-else>Loading author...</span>
+          </td>
+          <td>{{ books[id].updated | moment("DD/MM/YYYY") }}</td>
+        </tr>
+      </tbody>
+    </table>
+
     <h1 class="title">All books</h1>
     <table class="table">
       <thead>
@@ -18,10 +39,6 @@
         </tr>
       </tbody>
     </table>
-    <h1 class="title">Last books</h1>
-    <ul>
-      <li v-for="id in lastIds" :key="id">{{ books[id] }}</li>
-    </ul>
   </section>
 </template>
 
