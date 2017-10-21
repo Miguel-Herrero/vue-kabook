@@ -9,22 +9,17 @@
         <router-view/>
       </div>
     </div>
-
-    <!-- Hero footer: will stick at the bottom -->
-    <my-footer />
   </section>
 </template>
 
 <script>
 import Header from '@/components/Header'
-import Footer from '@/components/Footer'
 
 export default {
   name: 'app',
 
   components: {
-    myHeader: Header,
-    myFooter: Footer
+    myHeader: Header
   },
 
   created () {
