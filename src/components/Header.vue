@@ -14,7 +14,7 @@
 
     <div id="navMenuTransparent" class="navbar-menu" v-bind:class="{ 'is-active' : showNav }">
       <div class="navbar-start">
-        <div class="navbar-item has-dropdown is-hoverable">
+        <div class="navbar-item has-dropdown is-hoverable" @click="showNav = false">
           <router-link class="navbar-item" :to="{ name: 'books' }">Books</router-link>
           <router-link class="navbar-item" :to="{ name: 'tags' }">Tags</router-link>
           <router-link class="navbar-item" :to="{ name: 'authors' }">Authors</router-link>
