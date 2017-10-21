@@ -1,13 +1,9 @@
 <template>
-  <section id="app" class="hero is-light is-bold is-fullheight">
-    <!-- Hero head: will stick at the top -->
+  <section id="app">
     <my-header />
 
-    <!-- Hero content: will be in the middle -->
-    <div class="hero-body">
-      <div class="container">
-        <router-view/>
-      </div>
+    <div class="container">
+      <router-view/>
     </div>
   </section>
 </template>
@@ -29,3 +25,9 @@ export default {
 </script>
 
 <style lang="sass" src="bulma"></style>
+<style scoped>
+  section#app {
+    margin: 0 64px;
+  }
+</style>
+

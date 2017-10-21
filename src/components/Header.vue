@@ -1,31 +1,34 @@
 <template>
-  <div class="hero-head">
-      <nav class="navbar">
-        <div class="container">
-          <div class="navbar-brand">
-            <router-link class="navbar-item" :to="{ name: 'Hello' }">
-              <img src="../assets/kabook-logo.png" alt="Logo">
-            </router-link>
-            <span class="navbar-burger burger" data-target="navbarMenuHeroA">
-              <span></span>
-              <span></span>
-              <span></span>
-            </span>
-          </div>
-          <div id="navbarMenuHeroA" class="navbar-menu">
-            <div class="navbar-end">
-              <router-link class="navbar-item" :to="{ name: 'books' }">Books</router-link>
-              <span class="navbar-item" v-if="currentUser">
-                <button @click="signOut" class="button is-primary">Log out</button>
-              </span>
-              <span class="navbar-item" v-else>
-                <button @click="signInWithGoogle" class="button is-primary">Log in</button>
-              </span>
-            </div>
+  <nav class="navbar is-transparent">
+    <div class="navbar-brand">
+      <router-link class="navbar-item" :to="{ name: 'Hello' }">
+        <img src="../assets/kabook-logo.png" alt="Logo">
+      </router-link>
+
+      <div class="navbar-burger burger" data-target="navMenuTransparentExample">
+        <router-link class="navbar-item" :to="{ name: 'books' }">Books</router-link>
+      </div>
+    </div>
+
+    <div id="navMenuTransparentExample" class="navbar-menu">
+      <div class="navbar-start">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <router-link class="navbar-item" :to="{ name: 'books' }">Books</router-link>
+        </div>
+      </div>
+
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="field is-grouped">
+            <p class="control">
+              <button v-if="currentUser" @click="signOut" class="button is-primary">Log out</button>
+              <button v-else @click="signInWithGoogle" class="button is-primary">Log in</button>
+            </p>
           </div>
         </div>
-      </nav>
+      </div>
     </div>
+  </nav>
 </template>
 
 <script>
@@ -51,3 +54,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+nav.navbar {
+  margin-bottom: 50px;
+}
+</style>
