@@ -52,6 +52,15 @@ const actions = {
     books.forEach(book => {
       commit('SET_BOOK', { book })
     })
+  },
+
+  async getBooksByAuthor ({ commit, rootState }, { id }) {
+    let booksRef = rootState.db.collection('books')
+    let books = await booksRef.where('author.' + id, '>', 0).get()
+
+    books.forEach(book => {
+      commit('SET_BOOK', { book })
+    })
   }
 }
 

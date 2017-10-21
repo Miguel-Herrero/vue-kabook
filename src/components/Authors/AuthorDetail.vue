@@ -1,6 +1,18 @@
 <template>
   <section>
-    <h1 class="title">{{ authors[id].fullName }}</h1>
+    <h1 class="title">Books by {{ authors[id].fullName }}</h1>
+    <table class="table">
+      <thead>
+        <th>ISBN</th>
+        <th>Title</th>
+      </thead>
+      <tbody>
+        <tr v-for="book in booksByAuthor" :key="book.title">
+          <td><router-link :to="{ name: 'book', params: { id: book.id }}">{{ book.id }}</router-link></td>
+          <td>{{ book.title }}</td>
+        </tr>
+      </tbody>
+    </table>
   </section>
 </template>
 
@@ -14,8 +26,19 @@ export default {
 
   computed: {
     ...mapState({
-      authors: state => state.authors.all
-    })
+      authors: state => state.authors.all,
+      books: state => state.books.all
+    }),
+
+    booksByAuthor () {
+      const booksFiltered = []
+      for (var id in this.books) {
+        if (this.books[id].authors.includes(this.id)) {
+          booksFiltered.push(this.books[id])
+        }
+      }
+      return booksFiltered
+    }
   },
 
   created () {
