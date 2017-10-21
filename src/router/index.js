@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
+import Authors from '@/components/Authors/Authors'
 import Books from '@/components/Books/Books'
 import BookDetail from '@/components/Books/BookDetail'
 import Tags from '@/components/Tags/Tags'
@@ -30,6 +31,11 @@ const router = new Router({
       path: '/tags',
       name: 'tags',
       component: Tags
+    },
+    {
+      path: '/authors',
+      name: 'authors',
+      component: Authors
     }
   ]
 })

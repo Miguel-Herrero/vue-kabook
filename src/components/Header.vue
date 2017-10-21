@@ -17,6 +17,7 @@
         <div class="navbar-item has-dropdown is-hoverable">
           <router-link class="navbar-item" :to="{ name: 'books' }">Books</router-link>
           <router-link class="navbar-item" :to="{ name: 'tags' }">Tags</router-link>
+          <router-link class="navbar-item" :to="{ name: 'authors' }">Authors</router-link>
         </div>
       </div>
 
