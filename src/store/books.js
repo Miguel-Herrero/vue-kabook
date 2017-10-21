@@ -20,7 +20,7 @@ const mutations = {
         summary: data.summary,
         updated: data.updated,
         links: data.links,
-        tags: data.tags
+        tags: Object.keys(data.tags)
       }
     }
     if (state.allIds.indexOf(book.id) < 0) {

@@ -57,7 +57,7 @@ export default {
     }),
 
     tags () {
-      const tagsIds = Object.keys(this.books[this.id].tags)
+      const tagsIds = this.books[this.id].tags
       let tags = {}
       tagsIds.forEach(tagId => {
         if (this.tagsAll[tagId]) {
@@ -78,7 +78,7 @@ export default {
       }
     })
 
-    const tagsIds = Object.keys(this.books[this.id].tags)
+    const tagsIds = this.books[this.id].tags
     tagsIds.forEach(tagId => {
       if (!this.tagsAll[tagId]) {
         this.$store.dispatch('tags/fetchTag', { id: tagId })

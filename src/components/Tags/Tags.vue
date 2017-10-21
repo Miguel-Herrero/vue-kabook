@@ -28,9 +28,7 @@ export default {
   },
 
   created () {
-    if (!this.tagsIds.length) {
-      this.$store.dispatch('tags/getAllTags')
-    }
+    this.$store.dispatch('tags/getAllTags')
   }
 }
 </script>
