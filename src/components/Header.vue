@@ -5,12 +5,14 @@
         <img src="../assets/kabook-logo.png" alt="Logo">
       </router-link>
 
-      <div class="navbar-burger burger" data-target="navMenuTransparentExample">
-        <router-link class="navbar-item" :to="{ name: 'books' }">Books</router-link>
+      <div class="navbar-burger burger" data-target="navMenuTransparent" v-on:click="showNav = !showNav" v-bind:class="{ 'is-active' : showNav }">
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
     </div>
 
-    <div id="navMenuTransparentExample" class="navbar-menu">
+    <div id="navMenuTransparent" class="navbar-menu" v-bind:class="{ 'is-active' : showNav }">
       <div class="navbar-start">
         <div class="navbar-item has-dropdown is-hoverable">
           <router-link class="navbar-item" :to="{ name: 'books' }">Books</router-link>
@@ -37,6 +39,12 @@ import { mapState } from 'vuex'
 export default {
   name: 'Header',
 
+  data () {
+    return {
+      showNav: false
+    }
+  },
+
   methods: {
     signInWithGoogle () {
       this.$store.dispatch('users/signIn')
@@ -57,6 +65,6 @@ export default {
 
 <style scoped>
 nav.navbar {
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 }
 </style>
