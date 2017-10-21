@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Authors from '@/components/Authors/Authors'
+import Author from '@/components/Authors/AuthorDetail'
 import Books from '@/components/Books/Books'
 import BookDetail from '@/components/Books/BookDetail'
 import Tags from '@/components/Tags/Tags'
@@ -36,6 +37,12 @@ const router = new Router({
       path: '/authors',
       name: 'authors',
       component: Authors
+    },
+    {
+      path: '/authors/:id',
+      name: 'author',
+      component: Author,
+      props: true
     }
   ]
 })
