@@ -1,0 +1,28 @@
+{
+  "name": "kabook",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Miguel-Herrero/kabook.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Miguel-Herrero/kabook/issues"
+  },
+  "homepage": "https://github.com/Miguel-Herrero/kabook#readme",
+  "dependencies": {
+    "@google-cloud/firestore": "^0.8.2",
+    "async": "^2.5.0",
+    "camelcase": "^4.1.0",
+    "clean-string": "^1.1.1",
+    "lodash": "^4.17.4",
+    "sanitize-html": "^1.14.1",
+    "sqlite-json": "^1.0.1"
+  }
+}
