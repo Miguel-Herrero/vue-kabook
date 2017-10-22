@@ -18,3 +18,5 @@ selenium-debug.log
 
 # Firebase configuration
 src/config.js
+keyfile.json
+metadata.db
