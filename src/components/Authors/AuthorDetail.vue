@@ -8,7 +8,7 @@
       </thead>
       <tbody>
         <tr v-for="book in booksByAuthor" :key="book.title">
-          <td><router-link :to="{ name: 'book', params: { id: book.id }}">{{ book.id }}</router-link></td>
+          <td><router-link :to="{ name: 'book', params: { id: book.isbn }}">{{ book.isbn }}</router-link></td>
           <td>{{ book.title }}</td>
         </tr>
       </tbody>

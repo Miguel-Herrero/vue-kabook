@@ -10,9 +10,9 @@ const mutations = {
     state.all = {
       ...state.all,
       [book.id]: {
-        id: book.id,
+        isbn: book.id,
         title: data.title,
-        authors: Object.keys(data.author),
+        authors: Object.keys(data.authors),
         cover: data.cover,
         source: data.source,
         publicationDate: data.publicationDate,
