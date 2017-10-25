@@ -11,6 +11,8 @@
         </tr>
       </tbody>
     </table>
+
+    <p>{{ authorsIds }}</p>
   </section>
 </template>
 

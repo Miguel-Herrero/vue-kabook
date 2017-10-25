@@ -23,6 +23,12 @@ export default {
     ...mapState({
       currentUser: state => state.users.currentUser || {}
     })
+  },
+
+  created () {
+    this.$store.dispatch('books/getAllBooks')
+    this.$store.dispatch('authors/getAll')
+    this.$store.dispatch('tags/getAllTags')
   }
 }
 </script>

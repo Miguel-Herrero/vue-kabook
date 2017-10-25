@@ -53,7 +53,8 @@ export default {
     ...mapState({
       books: state => state.books.all,
       authorsAll: state => state.authors.all,
-      tagsAll: state => state.tags.all
+      tagsAll: state => state.tags.all,
+      tagsAllIds: state => state.tags.allIds
     }),
 
     tags () {
@@ -80,7 +81,7 @@ export default {
 
     const tagsIds = this.books[this.id].tags
     tagsIds.forEach(tagId => {
-      if (!this.tagsAll[tagId]) {
+      if (!this.tagsAllIds.length || !this.tagsAll[tagId]) {
         this.$store.dispatch('tags/fetchTag', { id: tagId })
       }
     })
