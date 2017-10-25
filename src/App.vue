@@ -27,6 +27,6 @@ export default {
 <style lang="sass" src="bulma"></style>
 <style scoped>
 section#app {
-  margin: 0 64px;
+  margin: 0 15px;
 }
 </style>
