@@ -19,12 +19,25 @@ const capitalize = str => str.length
   str.slice(1).toLowerCase()
 : '';
 
-console.log('Starting import')
-exporter.json('SELECT * FROM books LIMIT 10', function (err, booksResult) {
-  const booksJSON = JSON.parse(booksResult)
+const NOT_SUMMARY = '630,2875,2950'
+const NOT_LANGUAGE = '1758,2167,2195,2235,2388,2739,3061'
+const NOT_ISBN = '1844,1890,1966,2959'
+const NOT_AUTHOR = '2935,2984'
+const NOT_ID = `${NOT_ISBN},${NOT_LANGUAGE},${NOT_SUMMARY},${NOT_AUTHOR}`
+const OFFSET = 0
+const QUERY = `SELECT * FROM books WHERE author_sort NOT LIKE '%&%' AND id NOT IN (${NOT_ID}) LIMIT -1 OFFSET ${OFFSET}`
 
+exporter.json(QUERY, function (err, booksResult) {
+  if (err) {
+    console.log('Error fetching books from DB ', err)
+  }
+
+  const booksJSON = JSON.parse(booksResult)
+  console.log(`Starting import of ${booksJSON.length} books`)
+
+  let bookIndex = 1
   async.eachSeries(booksJSON, (book, callback) => {
-    console.log(`Starting book ${book.title}`)
+    console.log(`Starting book id ${book.id} (${bookIndex}/${booksJSON.length}): ${book.title}`)
     const bookDoc = {
       title: book.title,
       publicationDate: new Date(book.pubdate),
@@ -185,7 +198,8 @@ exporter.json('SELECT * FROM books LIMIT 10', function (err, booksResult) {
 
       booksRef.doc(bookDoc.isbn).set(bookDoc, { merge: true })
         .then(function () {
-          console.log(`Finished book ${book.title} OK`)
+          // console.log(`Finished book ${book.title} OK`)
+          bookIndex++
           return callback()
         })
         .catch(function (error) {
