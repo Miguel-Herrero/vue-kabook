@@ -1,3 +1,5 @@
 metadata.db
 node_modules
 keyfile.json
+config.js
+.DS_Store
