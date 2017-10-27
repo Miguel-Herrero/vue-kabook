@@ -1,15 +1,15 @@
 <template>
   <section>
-    <h1 class="title">Books by {{ authors[id].fullName }}</h1>
+    <h1 class="title">{{ $t('AuthorDetail.booksBy') }} {{ authors[id].fullName }}</h1>
     <table class="table">
       <thead>
-        <th>ISBN</th>
-        <th>Title</th>
+        <th>{{ $t('AuthorDetail.book.isbn') }}</th>
+        <th>{{ $t('AuthorDetail.book.title') }}</th>
       </thead>
       <tbody>
         <tr v-for="book in booksByAuthor" :key="book.title">
           <td><router-link :to="{ name: 'book', params: { id: book.isbn }}">{{ book.isbn }}</router-link></td>
-          <td>{{ book.title }}</td>
+          <td><router-link :to="{ name: 'book', params: { id: book.isbn }}">{{ book.title }}</router-link></td>
         </tr>
       </tbody>
     </table>
@@ -48,6 +48,25 @@ export default {
 
     if (!this.$store.state.books.allIds.length) {
       this.$store.dispatch('books/getAllBooks')
+    }
+  },
+
+  i18n: {
+    messages: {
+      es: { AuthorDetail: {
+        booksBy: 'Libros de',
+        book: {
+          title: 'Título',
+          isbn: 'ISBN'
+        }
+      }},
+      en: { AuthorDetail: {
+        booksBy: 'Books by',
+        book: {
+          title: 'Title',
+          isbn: 'ISBN'
+        }
+      }}
     }
   }
 }

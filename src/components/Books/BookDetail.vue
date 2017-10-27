@@ -15,10 +15,10 @@
       </h3>
 
       <ul>
-        <li><strong>Publication date</strong>: {{ books[id].publicationDate | moment("DD/MM/YYYY") }}</li>
-        <li><strong>Source</strong>: {{ books[id].source }}</li>
-        <li><strong>Language</strong>: {{ books[id].language }}</li>
-        <li><strong>Tags</strong>:
+        <li><strong>{{ $t('BookDetail.book.publicationDate') }}</strong>: {{ books[id].publicationDate | moment("DD/MM/YYYY") }}</li>
+        <li><strong>{{ $t('BookDetail.book.source') }}</strong>: {{ books[id].source }}</li>
+        <li><strong>{{ $t('BookDetail.book.language') }}</strong>: {{ books[id].language }}</li>
+        <li><strong>{{ $t('BookDetail.book.tags') }}</strong>:
           <div class="tags">
             <router-link
               v-for="tag in tags"
@@ -28,9 +28,9 @@
             </router-link>
           </div>
         </li>
-        <li><strong>Summary</strong>: <p>{{ books[id].summary }}</p></li>
-        <li><strong>Updated</strong>: {{ books[id].updated | moment("DD/MM/YYYY HH:mm") }}</li>
-        <li><strong>Download</strong>:
+        <li><strong>{{ $t('BookDetail.book.summary') }}</strong>: <p>{{ books[id].summary }}</p></li>
+        <li><strong>{{ $t('BookDetail.book.updated') }}</strong>: {{ books[id].updated | moment("DD/MM/YYYY HH:mm") }}</li>
+        <li><strong>{{ $t('BookDetail.book.download') }}</strong>:
           <a class="button is-uppercase"
             v-for="(link, index) in Object.keys(books[id].links)"
             :key="index"
@@ -45,7 +45,7 @@
 import { mapState } from 'vuex'
 
 export default {
-  name: 'bookDetail',
+  name: 'BookDetail',
 
   props: [ 'id' ],
 
@@ -85,6 +85,33 @@ export default {
         this.$store.dispatch('tags/fetchTag', { id: tagId })
       }
     })
+  },
+
+  i18n: {
+    messages: {
+      es: { BookDetail: {
+        book: {
+          publicationDate: 'Fecha de publicación',
+          source: 'Fuente',
+          language: 'Idioma',
+          tags: 'Etiquetas',
+          summary: 'Resumen',
+          updated: 'Actualizado',
+          download: 'Descargas'
+        }
+      }},
+      en: { Books: {
+        book: {
+          publicationDate: 'Publication date',
+          source: 'Source',
+          language: 'Language',
+          tags: 'Tags',
+          summary: 'Summary',
+          updated: 'Updated',
+          download: 'Downloads'
+        }
+      }}
+    }
   }
 }
 </script>

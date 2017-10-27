@@ -1,9 +1,9 @@
 <template>
   <section>
-    <h1 class="title">All tags</h1>
+    <h1 class="title">{{ $t('Tags.allTags') }}</h1>
     <table class="table">
       <thead>
-        <th>Name</th>
+        <th>{{ $t('Tags.tag.name') }}</th>
       </thead>
       <tbody>
         <tr v-for="(tag, index) in tags" :key="index">
@@ -29,6 +29,23 @@ export default {
 
   created () {
     this.$store.dispatch('tags/getAllTags')
+  },
+
+  i18n: {
+    messages: {
+      es: { Tags: {
+        allTags: 'Todas las etiquetas',
+        tag: {
+          name: 'Nombre'
+        }
+      }},
+      en: { Tags: {
+        allTags: 'All tags',
+        tag: {
+          name: 'Name'
+        }
+      }}
+    }
   }
 }
 </script>

@@ -1,9 +1,9 @@
 <template>
   <section>
-    <h1 class="title">All authors</h1>
+    <h1 class="title">{{ $t('Authors.allAuthors') }}</h1>
     <table class="table">
       <thead>
-        <th>Name</th>
+        <th>{{ $t('Authors.author.name') }}</th>
       </thead>
       <tbody>
         <tr v-for="(author, index) in authors" :key="index">
@@ -32,6 +32,23 @@ export default {
   created () {
     if (!this.authorsIds.length) {
       this.$store.dispatch('authors/getAll')
+    }
+  },
+
+  i18n: {
+    messages: {
+      es: { Authors: {
+        allAuthors: 'Todos los autores',
+        author: {
+          name: 'Nombre'
+        }
+      }},
+      en: { Authors: {
+        allAuthors: 'All authors',
+        author: {
+          name: 'Name'
+        }
+      }}
     }
   }
 }

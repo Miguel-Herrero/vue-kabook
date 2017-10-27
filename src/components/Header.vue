@@ -15,9 +15,9 @@
     <div id="navMenuTransparent" class="navbar-menu" v-bind:class="{ 'is-active' : showNav }">
       <div class="navbar-start">
         <div class="navbar-item has-dropdown is-hoverable" @click="showNav = false">
-          <router-link class="navbar-item" :to="{ name: 'books' }">Books</router-link>
-          <router-link class="navbar-item" :to="{ name: 'authors' }">Authors</router-link>
-          <router-link class="navbar-item" :to="{ name: 'tags' }">Tags</router-link>
+          <router-link class="navbar-item" :to="{ name: 'books' }">{{ $t('Header.books') }}</router-link>
+          <router-link class="navbar-item" :to="{ name: 'authors' }">{{ $t('Header.authors') }}</router-link>
+          <router-link class="navbar-item" :to="{ name: 'tags' }">{{ $t('Header.tags') }}</router-link>
         </div>
       </div>
 
@@ -25,8 +25,8 @@
         <div class="navbar-item">
           <div class="field is-grouped">
             <p class="control">
-              <button v-if="currentUser" @click="signOut" class="button is-primary">Log out</button>
-              <button v-else @click="signInWithGoogle" class="button is-primary">Log in</button>
+              <button v-if="currentUser" @click="signOut" class="button is-primary">{{ $t('Header.logOut') }}</button>
+              <button v-else @click="signInWithGoogle" class="button is-primary">{{ $t('Header.logIn') }}</button>
             </p>
           </div>
         </div>
@@ -61,6 +61,25 @@ export default {
     ...mapState({
       currentUser: state => state.users.currentUser
     })
+  },
+
+  i18n: {
+    messages: {
+      es: { Header: {
+        authors: 'Autores',
+        books: 'Libros',
+        logIn: 'Entrar',
+        logOut: 'Salir',
+        tags: 'Etiquetas'
+      }},
+      en: { Header: {
+        authors: 'Authors',
+        books: 'Books',
+        logIn: 'Log in',
+        logOut: 'Log out',
+        tags: 'Tags'
+      }}
+    }
   }
 }
 </script>

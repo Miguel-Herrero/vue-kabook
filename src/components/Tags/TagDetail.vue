@@ -1,10 +1,10 @@
 <template>
   <section>
-    <h1 class="title">Books of {{ tags[id].name }}</h1>
+    <h1 class="title">{{ $t('TagDetail.booksOf') }} {{ tags[id].name }}</h1>
     <table class="table">
       <thead>
-        <th>ISBN</th>
-        <th>Title</th>
+        <th>{{ $t('TagDetail.book.isbn') }}</th>
+        <th>{{ $t('TagDetail.book.title') }}</th>
       </thead>
       <tbody>
         <tr v-for="book in booksByTag" :key="book.title">
@@ -44,6 +44,25 @@ export default {
   created () {
     if (!this.tags[this.id]) {
       this.$store.dispatch('tags/fetchTag', { id: this.id })
+    }
+  },
+
+  i18n: {
+    messages: {
+      es: { TagDetail: {
+        booksOf: 'Libros de',
+        book: {
+          title: 'Título',
+          isbn: 'ISBN'
+        }
+      }},
+      en: { TagDetail: {
+        booksOf: 'Books of',
+        book: {
+          title: 'Title',
+          isbn: 'ISBN'
+        }
+      }}
     }
   }
 }

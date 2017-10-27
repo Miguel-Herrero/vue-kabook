@@ -1,37 +1,14 @@
 <template>
   <section>
-    <!-- <h1 class="title">Last books</h1>
+    <h1 class="title">{{ $t('Books.allBooks') }}</h1>
     <table class="table">
       <thead>
-        <th>ISBN</th>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Added on</th>
-      </thead>
-      <tbody>
-        <tr v-for="id in lastIds" :key="id">
-          <th><router-link :to="{ name: 'book', params: { id: id }}">{{ id }}</router-link></th>
-          <td>{{ books[id].title }}</td>
-          <td>
-            <span v-if="authors[authorId]" v-for="authorId in books[id].authors" :key="authorId">{{ authors[authorId].fullName }}</span>
-            <span v-else>Loading author...</span>
-          </td>
-          <td>{{ books[id].updated | moment("DD/MM/YYYY") }}</td>
-        </tr>
-      </tbody>
-    </table> -->
-
-    <h1 class="title">All books</h1>
-    <table class="table">
-      <thead>
-        <th>ISBN</th>
-        <th>Title</th>
-        <th>Author</th>
+        <th>{{ $t('Books.book.title') }}</th>
+        <th>{{ $t('Books.book.author') }}</th>
       </thead>
       <tbody>
         <tr v-for="book in books" :key="book.title">
-          <td><router-link :to="{ name: 'book', params: { id: book.isbn }}">{{ book.isbn }}</router-link></td>
-          <td>{{ book.title }}</td>
+          <td><router-link :to="{ name: 'book', params: { id: book.isbn }}">{{ book.title }}</router-link></td>
           <td>
             <span v-if="authors[authorId]" v-for="authorId in book.authors" :key="authorId">{{ authors[authorId].fullName }}</span>
             <span v-else>Loading author...</span>
@@ -62,6 +39,25 @@ export default {
     // if (!this.$store.state.books.lastIds.length) {
     this.$store.dispatch('books/getLastBooks')
     // }
+  },
+
+  i18n: {
+    messages: {
+      es: { Books: {
+        allBooks: 'Todos los libros',
+        book: {
+          title: 'Título',
+          author: 'Autor'
+        }
+      }},
+      en: { Books: {
+        allBooks: 'All books',
+        book: {
+          title: 'Title',
+          author: 'Author'
+        }
+      }}
+    }
   }
 }
 </script>

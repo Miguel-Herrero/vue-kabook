@@ -4,7 +4,7 @@
     <br>
     <br>
     <h1 class="title">Kabook</h1>
-    <h3 class="subtitle">A little corner for your imagination</h3>
+    <h3 class="subtitle">{{ $t('HelloWorld.aLittleCorner') }}</h3>
   </div>
 </template>
 
@@ -19,6 +19,13 @@ export default {
     }
   },
 
+  i18n: {
+    messages: {
+      es: { HelloWorld: { aLittleCorner: 'Un pequeño rincón para tu imaginación' } },
+      en: { HelloWorld: { aLittleCorner: 'A little corner for your imagination' } }
+    }
+  },
+
   computed: {
     ...mapState({
       currentUser: state => state.users.currentUser || {}
@@ -26,9 +33,9 @@ export default {
   },
 
   created () {
-    this.$store.dispatch('books/getAllBooks')
+    // this.$store.dispatch('books/getAllBooks')
     this.$store.dispatch('authors/getAll')
-    this.$store.dispatch('tags/getAllTags')
+    // this.$store.dispatch('tags/getAllTags')
   }
 }
 </script>
