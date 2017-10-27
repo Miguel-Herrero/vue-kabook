@@ -59,9 +59,6 @@ router.beforeResolve((to, from, next) => {
   if (!user && to.name !== 'Hello') {
     console.warn('Unauthorized route for unauthenticated user. Redirecting to home…')
     return next({name: 'Hello'})
-  // } else if (user && to.name === 'books') {
-  //   console.log('user a Books')
-  //   return next({ name: 'Hello' })
   } else {
     return next()
   }

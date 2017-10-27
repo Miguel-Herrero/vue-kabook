@@ -27,13 +27,10 @@ const actions = {
   },
 
   async getAll ({ commit, rootState }) {
-    console.log('authors/getAll')
     let authorsRef = rootState.db.collection('authors')
     let authors = await authorsRef.orderBy('fullName', 'asc').get()
 
-    console.log(authors)
     authors.forEach(author => {
-      console.log(author)
       commit('SET_AUTHOR', { author })
     })
   }
