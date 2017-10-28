@@ -14,6 +14,9 @@
             <span v-else>Loading author...</span>
           </td>
         </tr>
+        <infinite-loading @infinite="infiniteHandler">
+          <span slot="no-more">There are no more Books :(</span>
+        </infinite-loading>
       </tbody>
     </table>
   </section>
@@ -21,6 +24,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import InfiniteLoading from 'vue-infinite-loading'
 
 export default {
   name: 'Books',
@@ -34,11 +38,24 @@ export default {
     })
   },
 
+  methods: {
+    infiniteHandler ($state) {
+      this.$store.dispatch('books/getBooks', { startAfter: this.books[this.booksIds[this.booksIds.length - 1]], limit: 25 })
+        .then(() => { $state.loaded() })
+        // TO-DO: When no more results
+    }
+  },
+
   created () {
     // Get last books if not already fetched
     // if (!this.$store.state.books.lastIds.length) {
-    this.$store.dispatch('books/getLastBooks')
+      // this.$store.dispatch('books/getLastBooks')
+      // this.$store.dispatch('books/getBooks', { startAfter: this.booksIds.length, limit: 25 })
     // }
+  },
+
+  components: {
+    InfiniteLoading
   },
 
   i18n: {

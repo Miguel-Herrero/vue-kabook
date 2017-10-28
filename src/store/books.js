@@ -45,6 +45,25 @@ const actions = {
     })
   },
 
+  getBooks ({ commit, rootState }, options) {
+    return new Promise((resolve, reject) => {
+      const startAfter = (options && options.startAfter && options.startAfter.title) || 0
+      const limit = (options && options.limit) || 37
+      let booksRef = rootState.db.collection('books')
+      let booksQuery = booksRef.orderBy('title').startAfter(startAfter).limit(limit).get()
+
+      booksQuery.then(books => {
+        books.docs.forEach((book, index, array) => {
+          if (book) { commit('SET_BOOK', { book }) }
+
+          if (index === array.length - 1) {
+            return resolve()
+          }
+        })
+      })
+    })
+  },
+
   async getAllBooks ({ commit, rootState }) {
     let booksRef = rootState.db.collection('books')
     let books = await booksRef.get()
