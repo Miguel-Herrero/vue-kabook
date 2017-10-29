@@ -11,7 +11,7 @@
           <td><router-link :to="{ name: 'book', params: { id: book.isbn }}">{{ book.title }}</router-link></td>
           <td>
             <span v-if="authors[authorId]" v-for="authorId in book.authors" :key="authorId">{{ authors[authorId].fullName }}</span>
-            <span v-else>Loading author...</span>
+            <span v-else>{{ $t('Books.loadingAuthor') }}</span>
           </td>
         </tr>
         <infinite-loading @infinite="infiniteHandler">
@@ -42,10 +42,23 @@ export default {
     })
   },
 
+  watch: {
+    books (val) {
+      Object.keys(val).forEach(bookId => {
+        this.books[bookId].authors.forEach(authorId => {
+          if (!this.authors[authorId]) {
+            this.$store.dispatch('authors/fetchAuthor', { id: authorId })
+          }
+        })
+      })
+    }
+  },
+
   i18n: {
     messages: {
       es: { Books: {
         allBooks: 'Todos los libros',
+        loadingAuthor: 'Cargando autor…',
         noMoreResults: 'No hay más resultados',
         book: {
           title: 'Título',
@@ -54,6 +67,7 @@ export default {
       }},
       en: { Books: {
         allBooks: 'All books',
+        loadingAuthor: 'Loading author…',
         noMoreResults: 'There are no more results',
         book: {
           title: 'Title',
