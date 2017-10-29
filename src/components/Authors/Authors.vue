@@ -64,6 +64,14 @@ export default {
         .then(() => $state.loaded())
         .catch(() => $state.complete())
     }
+  },
+
+  created () {
+    this.$store.dispatch('authors/getAuthors', {
+      orderBy: 'lastName',
+      startAfter: '0',
+      limit: 1
+    })
   }
 }
 </script>

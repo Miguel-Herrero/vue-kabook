@@ -69,7 +69,14 @@ const actions = {
     let booksRef = rootState.db.collection('books')
     let books = await booksRef.where('authors.' + authorId, '>', 0).get()
 
-    console.log(books.length)
+    books.forEach(book => {
+      commit('SET_BOOK', { book })
+    })
+  },
+
+  async getBooksyTag ({ commit, rootState }, tagId) {
+    let booksRef = rootState.db.collection('books')
+    let books = await booksRef.where('tags.' + tagId, '>', 0).get()
 
     books.forEach(book => {
       commit('SET_BOOK', { book })
@@ -79,15 +86,6 @@ const actions = {
   async getAllBooks ({ commit, rootState }) {
     let booksRef = rootState.db.collection('books')
     let books = await booksRef.get()
-
-    books.forEach(book => {
-      commit('SET_BOOK', { book })
-    })
-  },
-
-  async getBooksByAuthora ({ commit, rootState }, { id }) {
-    let booksRef = rootState.db.collection('books')
-    let books = await booksRef.where('author.' + id, '>', 0).get()
 
     books.forEach(book => {
       commit('SET_BOOK', { book })

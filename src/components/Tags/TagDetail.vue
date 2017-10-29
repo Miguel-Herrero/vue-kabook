@@ -45,6 +45,8 @@ export default {
     if (!this.tags[this.id]) {
       this.$store.dispatch('tags/fetchTag', { id: this.id })
     }
+
+    this.$store.dispatch('books/getBooksByTag', this.id)
   },
 
   i18n: {

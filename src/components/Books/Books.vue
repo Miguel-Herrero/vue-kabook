@@ -15,7 +15,7 @@
           </td>
         </tr>
         <infinite-loading @infinite="infiniteHandler">
-          <span slot="no-more">{{ $t('Tags.noMoreResults') }}</span>
+          <span slot="no-more">{{ $t('Books.noMoreResults') }}</span>
         </infinite-loading>
       </tbody>
     </table>

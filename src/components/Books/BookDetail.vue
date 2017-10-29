@@ -10,7 +10,7 @@
       <h1 class="title is-1">{{ books[id].title }}</h1>
       <h3 class="subtitle is-3">
         <span v-for="authorId in books[id].authors" :key="authorId">
-          <router-link v-if="authorsAll[authorId].fullName" :to="{ name: 'author', params: { id: authorId } }">{{ authorsAll[authorId].fullName }}, </router-link>
+          <router-link v-if="authors[authorId] && authors[authorId].fullName" :to="{ name: 'author', params: { id: authorId } }">{{ authors[authorId].fullName }}, </router-link>
         </span>
       </h3>
 
@@ -52,7 +52,7 @@ export default {
   computed: {
     ...mapState({
       books: state => state.books.all,
-      authorsAll: state => state.authors.all,
+      authors: state => state.authors.all,
       tagsAll: state => state.tags.all,
       tagsAllIds: state => state.tags.allIds
     }),
@@ -74,7 +74,7 @@ export default {
 
   created () {
     this.books[this.id].authors.forEach(authorId => {
-      if (!this.authorsAll[authorId]) {
+      if (!this.authors[authorId]) {
         this.$store.dispatch('authors/fetchAuthor', { id: authorId })
       }
     })
