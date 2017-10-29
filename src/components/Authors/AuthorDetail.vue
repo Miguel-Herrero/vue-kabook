@@ -46,9 +46,7 @@ export default {
       this.$store.dispatch('authors/fetchAuthor', { id: this.id })
     }
 
-    if (!this.$store.state.books.allIds.length) {
-      this.$store.dispatch('books/getAllBooks')
-    }
+    this.$store.dispatch('books/getBooksByAuthor', this.id)
   },
 
   i18n: {

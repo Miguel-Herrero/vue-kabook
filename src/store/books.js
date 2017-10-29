@@ -47,20 +47,32 @@ const actions = {
 
   getBooks ({ commit, rootState }, options) {
     return new Promise((resolve, reject) => {
-      const startAfter = (options && options.startAfter && options.startAfter.title) || 0
-      const limit = (options && options.limit) || 37
+      if (!options) { return reject(new Error('No options for getting Books')) }
+      const { orderBy, startAfter, limit } = options
+      if (!orderBy || !startAfter || !limit) { return reject(new Error('No orderBy, startAFter or limit options for getting Books')) }
+
       let booksRef = rootState.db.collection('books')
-      let booksQuery = booksRef.orderBy('title').startAfter(startAfter).limit(limit).get()
+      let booksQuery = booksRef.orderBy(orderBy).startAfter(startAfter).limit(limit).get()
 
       booksQuery.then(books => {
+        if (!books.docs.length) { return reject(new Error('No more books')) }
+
         books.docs.forEach((book, index, array) => {
           if (book) { commit('SET_BOOK', { book }) }
-
-          if (index === array.length - 1) {
-            return resolve()
-          }
+          if (index === array.length - 1) { return resolve() }
         })
       })
+    })
+  },
+
+  async getBooksByAuthor ({ commit, rootState }, authorId) {
+    let booksRef = rootState.db.collection('books')
+    let books = await booksRef.where('authors.' + authorId, '>', 0).get()
+
+    console.log(books.length)
+
+    books.forEach(book => {
+      commit('SET_BOOK', { book })
     })
   },
 
@@ -73,7 +85,7 @@ const actions = {
     })
   },
 
-  async getBooksByAuthor ({ commit, rootState }, { id }) {
+  async getBooksByAuthora ({ commit, rootState }, { id }) {
     let booksRef = rootState.db.collection('books')
     let books = await booksRef.where('author.' + id, '>', 0).get()
 

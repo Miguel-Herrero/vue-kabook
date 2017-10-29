@@ -8,7 +8,7 @@ const mutations = {
     const data = author.data()
     state.all = {
       ...state.all,
-      [author.id]: { id: author.id, fullName: data.fullName }
+      [author.id]: { id: author.id, fullName: data.fullName, lastName: data.lastName, name: data.name }
     }
     if (state.allIds.indexOf(author.id) < 0) {
       state.allIds.push(author.id)
@@ -32,6 +32,26 @@ const actions = {
 
     authors.forEach(author => {
       commit('SET_AUTHOR', { author })
+    })
+  },
+
+  getAuthors ({ commit, rootState }, options) {
+    return new Promise((resolve, reject) => {
+      if (!options) { return reject(new Error('No options for getting Authors')) }
+      const { orderBy, startAfter, limit } = options
+      if (!orderBy || !startAfter || !limit) { return reject(new Error('No orderBy, startAFter or limit options for getting Authors')) }
+
+      const authorsRef = rootState.db.collection('authors')
+      const authorsQuery = authorsRef.orderBy(orderBy).startAfter(startAfter).limit(limit).get()
+
+      authorsQuery.then(authors => {
+        if (!authors.docs.length) { return reject(new Error('No more authors')) }
+
+        authors.docs.forEach((author, index, array) => {
+          if (author) { commit('SET_AUTHOR', { author }) }
+          if (index === array.length - 1) { return resolve() }
+        })
+      })
     })
   }
 }

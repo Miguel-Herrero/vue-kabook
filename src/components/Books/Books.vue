@@ -15,7 +15,7 @@
           </td>
         </tr>
         <infinite-loading @infinite="infiniteHandler">
-          <span slot="no-more">There are no more Books :(</span>
+          <span slot="no-more">{{ $t('Tags.noMoreResults') }}</span>
         </infinite-loading>
       </tbody>
     </table>
@@ -29,6 +29,10 @@ import InfiniteLoading from 'vue-infinite-loading'
 export default {
   name: 'Books',
 
+  components: {
+    InfiniteLoading
+  },
+
   computed: {
     ...mapState({
       books: state => state.books.all,
@@ -38,30 +42,11 @@ export default {
     })
   },
 
-  methods: {
-    infiniteHandler ($state) {
-      this.$store.dispatch('books/getBooks', { startAfter: this.books[this.booksIds[this.booksIds.length - 1]], limit: 25 })
-        .then(() => { $state.loaded() })
-        // TO-DO: When no more results
-    }
-  },
-
-  created () {
-    // Get last books if not already fetched
-    // if (!this.$store.state.books.lastIds.length) {
-      // this.$store.dispatch('books/getLastBooks')
-      // this.$store.dispatch('books/getBooks', { startAfter: this.booksIds.length, limit: 25 })
-    // }
-  },
-
-  components: {
-    InfiniteLoading
-  },
-
   i18n: {
     messages: {
       es: { Books: {
         allBooks: 'Todos los libros',
+        noMoreResults: 'No hay más resultados',
         book: {
           title: 'Título',
           author: 'Autor'
@@ -69,11 +54,24 @@ export default {
       }},
       en: { Books: {
         allBooks: 'All books',
+        noMoreResults: 'There are no more results',
         book: {
           title: 'Title',
           author: 'Author'
         }
       }}
+    }
+  },
+
+  methods: {
+    infiniteHandler ($state) {
+      this.$store.dispatch('books/getBooks', {
+        orderBy: 'title',
+        startAfter: (this.books[this.booksIds[this.booksIds.length - 1]] && this.books[this.booksIds[this.booksIds.length - 1]].title) || '0',
+        limit: 10
+      })
+        .then(() => $state.loaded())
+        .catch(() => $state.complete())
     }
   }
 }
