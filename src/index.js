@@ -11,7 +11,7 @@ const db = new Firestore({
   keyFilename: './keyfile.json'
 })
 const booksRef = db.collection('books')
-const authorssRef = db.collection('authors')
+const authorsRef = db.collection('authors')
 const tagssRef = db.collection('tags')
 
 const capitalize = str => str.length
@@ -21,11 +21,13 @@ const capitalize = str => str.length
 
 const NOT_SUMMARY = '630,2875,2950'
 const NOT_LANGUAGE = '1758,2167,2195,2235,2388,2739,3061'
-const NOT_ISBN = '1844,1890,1966,2959'
+const NOT_ISBN = '3006'
 const NOT_AUTHOR = '2935,2984'
 const NOT_ID = `${NOT_ISBN},${NOT_LANGUAGE},${NOT_SUMMARY},${NOT_AUTHOR}`
-const OFFSET = 0
-const QUERY = `SELECT * FROM books WHERE author_sort NOT LIKE '%&%' AND id NOT IN (${NOT_ID}) LIMIT -1 OFFSET ${OFFSET}`
+const OFFSET = 1589
+// const QUERY = `SELECT * FROM books WHERE author_sort NOT LIKE '%&%' AND id NOT IN (${NOT_ID}) LIMIT 1 OFFSET ${OFFSET}`
+const QUERY = `SELECT * FROM books WHERE id NOT IN (${NOT_ISBN}) LIMIT -1 OFFSET ${OFFSET}`
+// const QUERY = `SELECT * FROM books`
 
 exporter.json(QUERY, function (err, booksResult) {
   if (err) {
@@ -47,43 +49,55 @@ exporter.json(QUERY, function (err, booksResult) {
 
     async.series({
       authors: function (callback) {
-        exporter.json(`SELECT authors.name FROM authors WHERE authors.sort = "${book.author_sort}"`, function (err, author) {
-          if (err) { callback(err) }
-          author = JSON.parse(author)
-          if (author[0].name) {
-            author = author[0].name
+        const authors = book.author_sort.split(' & ')
 
-            let authorName = ''
-            let authorLastName = ''
-            const authorSplit = author.split(' ')
-            authorSplit.forEach(word => {
-              if (isUpperCase(word)) {
-                authorLastName = authorLastName + ' ' + capitalize(word)
-              } else {
-                authorName = authorName + ' ' + word
-              }
-            })
+        // Authors to return for Book
+        const authorsObject = {}
 
-            
+        // Search each author and send to firebase
+        authors.forEach((author, index, array) => {
+          exporter.json(`SELECT authors.name FROM authors WHERE authors.sort = "${author}"`, function (err, author) {
+            if (err) { callback(err) }
 
-            const authorKey = cleanString.clean(camelCase(author))
-            authorssRef.doc(authorKey).set({
-              fullName: authorName.trim() + ' ' + authorLastName.trim(),
-              name: authorName.trim(),
-              lastName: authorLastName.trim()
-            }, { merge: true })
-              .then(function () {
-                return callback(null, {
-                  [authorKey]: new Date()
+            // We should receive only one result
+            author = JSON.parse(author)[0]
+  
+            if (author.name) {
+              author = author.name
+              const authorKey = cleanString.clean(camelCase(author))
+  
+              let authorName = ''
+              let authorLastName = ''
+
+              // Ex: Douglas PRESTON => { name: Douglas, lastName: Preston }
+              author.split(' ').forEach(word => {
+                if (isUpperCase(word)) {
+                  authorLastName = authorLastName + ' ' + capitalize(word)
+                } else {
+                  authorName = authorName + ' ' + word
+                }
+              })
+
+              authorsObject[authorKey] = new Date();
+
+              authorsRef.doc(authorKey).set({
+                  fullName: authorName.trim() + ' ' + authorLastName.trim(),
+                  name: authorName.trim(),
+                  lastName: authorLastName.trim()
+                }, { merge: true })
+                .then(() => {
+                  if (index + 1 === array.length) {
+                    return callback(null, authorsObject)
+                  }
                 })
-              })
-              .catch(function (error) {
-                return callback(new Error(`Error adding author ${authorKey} to book ${book.title}`))
-              })
-          } else {
-            return callback(new Error(`Book ${book.title} does not have author`))
-          }
-        })
+                .catch(function (error) {
+                    return callback(new Error(`Error adding author ${authorKey} to book ${book.title}`))
+                  })
+            } else {
+              return callback(new Error(`Book ${book.title} does not have author`))
+            }
+          })
+        })        
       },
       isbn: function(callback) {
         exporter.json(`SELECT val, type FROM identifiers WHERE identifiers.book = "${book.id}"`, function (err, identifier) {
