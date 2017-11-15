@@ -24,11 +24,12 @@ const NOT_LANGUAGE = '1758,2167,2195,2235,2388,2739,3061'
 const NOT_ISBN = '3006'
 const NOT_AUTHOR = '2935,2984'
 const NOT_ID = `${NOT_ISBN},${NOT_LANGUAGE},${NOT_SUMMARY},${NOT_AUTHOR}`
-const OFFSET = 1589
+const OFFSET = 0
 // const QUERY = `SELECT * FROM books WHERE author_sort NOT LIKE '%&%' AND id NOT IN (${NOT_ID}) LIMIT 1 OFFSET ${OFFSET}`
-const QUERY = `SELECT * FROM books WHERE id NOT IN (${NOT_ISBN}) LIMIT -1 OFFSET ${OFFSET}`
+const QUERY = `SELECT * FROM books WHERE id NOT IN (${NOT_ISBN}) ORDER BY books.title ASC LIMIT 10 OFFSET ${OFFSET}`
 // const QUERY = `SELECT * FROM books`
 
+console.time('Upload')
 exporter.json(QUERY, function (err, booksResult) {
   if (err) {
     console.log('Error fetching books from DB ', err)
@@ -37,13 +38,12 @@ exporter.json(QUERY, function (err, booksResult) {
   const booksJSON = JSON.parse(booksResult)
   console.log(`Starting import of ${booksJSON.length} books`)
 
-  let bookIndex = 1
-  async.eachSeries(booksJSON, (book, callback) => {
-    console.log(`Starting book id ${book.id} (${bookIndex}/${booksJSON.length}): ${book.title}`)
+  async.eachOfSeries(booksJSON, (book, index, callback) => {
+    console.log(`Starting book id ${book.id} (${index + 1}/${booksJSON.length}): ${book.title}`)
     const bookDoc = {
       title: book.title,
       publicationDate: new Date(book.pubdate),
-      updated: new Date(book.last_modified),
+      updated: new Date(book.last_modified).getTime(),
       cover: `http://biblioteca.hol.es/biblioteca/biblioteca/${book.path}/cover.jpg`
     }
 
@@ -78,12 +78,13 @@ exporter.json(QUERY, function (err, booksResult) {
                 }
               })
 
-              authorsObject[authorKey] = new Date();
+              authorsObject[authorKey] = Date.now();
 
               authorsRef.doc(authorKey).set({
                   fullName: authorName.trim() + ' ' + authorLastName.trim(),
                   name: authorName.trim(),
-                  lastName: authorLastName.trim()
+                  lastName: authorLastName.trim(),
+                  updated: Date.now()
                 }, { merge: true })
                 .then(() => {
                   if (index + 1 === array.length) {
@@ -185,9 +186,9 @@ exporter.json(QUERY, function (err, booksResult) {
               let tagFormatted = cleanString.clean(tag.name)
               tagFormatted = cleanString.cleanSpecialCharacters(tagFormatted)
               tagFormatted = tagFormatted.toLowerCase()
-              tags[tagFormatted] = new Date()
+              tags[tagFormatted] = Date.now()
 
-              tagssRef.doc(tagFormatted).set({ name: tag.name, updated: new Date() }, { merge: true })
+              tagssRef.doc(tagFormatted).set({ name: tag.name, updated: Date.now() }, { merge: true })
                 .catch(function (error) {
                   return callback(new Error(`Error adding tag ${tagFormatted} to book ${book.title}`))
                 })
@@ -212,8 +213,9 @@ exporter.json(QUERY, function (err, booksResult) {
 
       booksRef.doc(bookDoc.isbn).set(bookDoc, { merge: true })
         .then(function () {
-          // console.log(`Finished book ${book.title} OK`)
-          bookIndex++
+          if (booksJSON.length === index + 1) {
+            console.timeEnd('Upload')
+          }
           return callback()
         })
         .catch(function (error) {
