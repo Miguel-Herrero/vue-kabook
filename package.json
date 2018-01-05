@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Miguel-Herrero/kabook#readme",
   "dependencies": {
     "@google-cloud/firestore": "^0.8.2",
+    "algoliasearch": "^3.24.9",
     "async": "^2.5.0",
     "camelcase": "^4.1.0",
     "clean-string": "^1.1.1",

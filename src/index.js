@@ -1,3 +1,4 @@
+const algoliasearch = require('algoliasearch');
 const SqliteJSON = require('sqlite-json')
 const exporter = SqliteJSON('./metadata.db')
 const async = require('async')
@@ -5,6 +6,10 @@ const cleanString = require('clean-string')
 const camelCase = require('camelcase')
 const sanitizeHtml = require('sanitize-html')
 const Firestore = require('@google-cloud/firestore')
+const config = require('./config')
+
+const client = algoliasearch(config.algolia.appId, config.algolia.adminKey);
+const authorsIndex = client.initIndex('books');
 
 const db = new Firestore({
   projectId: 'api-project-875720539301',
@@ -28,6 +33,9 @@ const OFFSET = 0
 // const QUERY = `SELECT * FROM books WHERE author_sort NOT LIKE '%&%' AND id NOT IN (${NOT_ID}) LIMIT 1 OFFSET ${OFFSET}`
 const QUERY = `SELECT * FROM books WHERE id NOT IN (${NOT_ISBN}) ORDER BY books.title ASC LIMIT 10 OFFSET ${OFFSET}`
 // const QUERY = `SELECT * FROM books`
+
+let authorsStack = {}
+let algoliaBatch = []
 
 console.time('Upload')
 exporter.json(QUERY, function (err, booksResult) {
@@ -79,6 +87,9 @@ exporter.json(QUERY, function (err, booksResult) {
               })
 
               authorsObject[authorKey] = Date.now();
+
+              // For Algolia's index, after everything is processed
+              authorsStack[authorKey] = authorName.trim() + ' ' + authorLastName.trim()
 
               authorsRef.doc(authorKey).set({
                   fullName: authorName.trim() + ' ' + authorLastName.trim(),
@@ -211,6 +222,18 @@ exporter.json(QUERY, function (err, booksResult) {
       bookDoc.links = results.links
       // console.log(bookDoc)
 
+      algoliaBatch.push({
+        title: bookDoc.title,
+        publicationDate: bookDoc.publicationDate,
+        author: authorsStack[Object.keys(bookDoc.authors)[0]],
+        summary: bookDoc.summary,
+        language: bookDoc.language,
+        series: bookDoc.series,
+        tags: Object.keys(bookDoc.tags),
+        isbn: bookDoc.isbn,
+        objectID: bookDoc.isbn
+      });
+
       booksRef.doc(bookDoc.isbn).set(bookDoc, { merge: true })
         .then(function () {
           if (booksJSON.length === index + 1) {
@@ -225,8 +248,13 @@ exporter.json(QUERY, function (err, booksResult) {
   }, (err) => {
     if (err) {
       console.error(err)
-      process.exit(1)
+      return process.exit(1)
     }
+
+    // Add processed books to Algolia index
+    authorsIndex.addObjects(algoliaBatch, function(err, content) {
+      console.log(content);
+    });
   })
 })
 
